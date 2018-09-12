@@ -5,8 +5,9 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from datetime import datetime
 
-M = 6 #number of bases
+M = 6
 BATCH_SIZE = 40
 NUM_BATCHES = 300
 
@@ -14,11 +15,11 @@ class Data(object):
     def __init__(self):
         num_samp = 50
         sigma = 0.1
-        np.random.seed(31415) #seed with time of day?
+        np.random.seed()
 
         self.index = np.arange(num_samp)        
         self.x = np.random.uniform(size=(num_samp))
-        self.y = np.sin(2*np.pi*self.x) + np.random.normal(0, sigma, num_samp) #noisy sine
+        self.y = np.sin(2*np.pi*self.x) + np.random.normal(0, sigma, num_samp)
         
     def get_batch(self):
         choices = np.random.choice(self.index, size=BATCH_SIZE)
@@ -31,7 +32,7 @@ def f(x):
     b = tf.get_variable('b', [], tf.float32, tf.zeros_initializer())
     mu = tf.get_variable('mu', [M, 1], tf.float32, tf.random_uniform_initializer())    
     sig = tf.get_variable('sig', [M, 1], tf.float32, tf.random_uniform_initializer())
-    #calculate gaussian
+    #calculate phi
     phi = tf.exp(- tf.pow((x - mu)/sig,2))
     #calculate yhat
     return tf.squeeze(tf.matmul(tf.transpose(w),phi) + b)
