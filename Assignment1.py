@@ -54,14 +54,14 @@ for _ in tqdm(range(0, NUM_BATCHES)):
     loss_np, _ = sess.run([loss, optim], feed_dict={x: x_np, y: y_np})
 
 plt.figure(1, figsize=[18,12])
-t = np.linspace(0, 1, 32)
+t1 = np.linspace(0, 1, 32)
 
 plt.subplot(121)
 
-plt.plot(t, np.sin(2 * np.pi * t), 'k')
+plt.plot(t1, np.sin(2 * np.pi * t1), 'k')
 plt.scatter(data.x, data.y)
-yhats = sess.run(y_hat, feed_dict={x:t})
-plt.plot(t, yhats, 'r--')
+yhats = sess.run(y_hat, feed_dict={x:t1})
+plt.plot(t1, yhats, 'r--')
 
 plt.xlabel('x')
 plt.ylabel('y')
@@ -75,12 +75,11 @@ for var in tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES):
     if var.name.rstrip(":0") == "sig":
         sigs = np.array(sess.run(var)).flatten()
 
-print("mus: ", mus)
-print("mus[0]: ", mus[0])
-print("sigs: ", sigs)
+t2 = np.linspace(0,1)
 
 for i in range(M):
-    plt.plot(t, np.exp(-(t - mus[i])/sigs[i])**2)
+	y = np.exp(-((t2 - mus[i])/sigs[i])**2)
+	plt.plot(t2,y) 
 
 plt.xlabel('x')
 plt.ylabel('y')
