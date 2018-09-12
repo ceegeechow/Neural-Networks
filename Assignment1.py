@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 M = 6
-BATCH_SIZE = 32
+BATCH_SIZE = 40
 NUM_BATCHES = 300
 
 class Data(object):
@@ -24,7 +24,6 @@ class Data(object):
         choices = np.random.choice(self.index, size=BATCH_SIZE)
 
         return self.x[choices], self.y[choices].flatten()
-
 
 def f(x):
     w = tf.get_variable('w', [M, 1], tf.float32, tf.random_normal_initializer())    
@@ -54,7 +53,7 @@ for _ in tqdm(range(0, NUM_BATCHES)):
     loss_np, _ = sess.run([loss, optim], feed_dict={x: x_np, y: y_np})
 
 plt.figure(1, figsize=[18,12])
-t1 = np.linspace(0, 1, 32)
+t1 = np.linspace(0,1,BATCH_SIZE)
 
 plt.subplot(121)
 
