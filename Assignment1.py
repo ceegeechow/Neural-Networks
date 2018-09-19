@@ -33,7 +33,7 @@ def f(x):
     mu = tf.get_variable('mu', [M, 1], tf.float32, tf.random_uniform_initializer())    
     sig = tf.get_variable('sig', [M, 1], tf.float32, tf.random_uniform_initializer())
     #calculate phi
-    phi = tf.exp(- tf.pow((x - mu)/sig,2))
+    phi = tf.exp(- tf.pow((x - mu)/sig,2))                                          #dimension mismatch????
     #calculate yhat
     return tf.squeeze(tf.matmul(tf.transpose(w),phi) + b)
 
