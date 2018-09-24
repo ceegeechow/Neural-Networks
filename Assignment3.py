@@ -9,15 +9,15 @@ image_h = 28
 image_w = 28
 channels = 1
 input_shape = (image_h, image_w, channels)
+val_set_size = 10000
 
 #tunable hyperparams
 batch_size = 100
-epochs = 2
-kernel_size = 5
+epochs = 3
+kernel_size = 3
 pool_size = 2
-a_fcn = 'elu'
-learning_rate = .001
-dropout = .5
+a_fcn = 'relu'
+dropout = .35
 lam = .001
 
 #get data
@@ -37,10 +37,10 @@ x_train /= 255.0
 y_train = tf.keras.utils.to_categorical(y_train, num_classes)
 
 #split into training/validation sets
-x_val = x_train[:30000]
-y_val = y_train[:30000]
-x_train = x_train[30000:]
-y_train = y_train[30000:]
+x_val = x_train[:val_set_size]
+y_val = y_train[:val_set_size]
+x_train = x_train[val_set_size:]
+y_train = y_train[val_set_size:]
 
 #build cnn
 model = tf.keras.Sequential()
@@ -54,9 +54,9 @@ model.add(tf.keras.layers.Dropout(dropout))
 model.add(tf.keras.layers.Dense(num_classes, activation='softmax'))
 
 #train model
-model.compile(loss=tf.keras.losses.categorical_crossentropy, optimizer=tf.keras.optimizers.SGD(lr=learning_rate), metrics=['accuracy'])
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
-#model.fit(x_val, y_val, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
+model.compile(loss=tf.keras.losses.categorical_crossentropy, optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
+#model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
+model.fit(x_val, y_val, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
 
 #test model
 score = model.evaluate(x_test, y_test, verbose=0)
