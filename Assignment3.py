@@ -12,8 +12,8 @@ input_shape = (image_h, image_w, channels)
 val_set_size = 10000
 
 #tunable hyperparams
-batch_size = 100
-epochs = 3
+batch_size = 50
+epochs = 2
 kernel_size = 3
 pool_size = 2
 a_fcn = 'relu'
@@ -49,14 +49,14 @@ model.add(tf.keras.layers.MaxPooling2D(pool_size=pool_size, strides=pool_size))
 model.add(tf.keras.layers.Conv2D(64, kernel_size=kernel_size, activation=a_fcn))
 model.add(tf.keras.layers.MaxPooling2D(pool_size=pool_size))
 model.add(tf.keras.layers.Flatten())
-model.add(tf.keras.layers.Dense(1000, activation=a_fcn, kernel_regularizer=tf.keras.regularizers.l2(lam)))
+model.add(tf.keras.layers.Dense(500, activation=a_fcn, kernel_regularizer=tf.keras.regularizers.l2(lam)))
 model.add(tf.keras.layers.Dropout(dropout))
 model.add(tf.keras.layers.Dense(num_classes, activation='softmax'))
 
 #train model
 model.compile(loss=tf.keras.losses.categorical_crossentropy, optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
-#model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
-model.fit(x_val, y_val, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
+model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
+#model.fit(x_val, y_val, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
 
 #test model
 score = model.evaluate(x_test, y_test, verbose=0)
