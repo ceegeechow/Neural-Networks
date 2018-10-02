@@ -75,7 +75,7 @@ y_train = tf.keras.utils.to_categorical(y_train, num_classes)
 
 #tunable hyperparams
 batch_size = 100
-epochs = 10
+epochs = 20
 dropout = .35
 dense_units = 1000
 lam = .003
@@ -93,22 +93,22 @@ def add_bn_layer(model):
 #build cnn
 model = tf.keras.Sequential()
 # add_conv_layer(model, 48, input_shape=(image_h, image_w, channels))
-model.add(tf.keras.layers.Conv2D(48, kernel_size=3, 
+model.add(tf.keras.layers.Conv2D(32, kernel_size=3, 
 		strides=(1, 1), activation='elu', padding='same', input_shape=(image_h, image_w, channels)))
 add_bn_layer(model)
-add_conv_layer(model, 48)
+add_conv_layer(model, 32)
 add_bn_layer(model)
 add_pooling_layer(model)
 model.add(tf.keras.layers.Dropout(.2))
-add_conv_layer(model, 96)
+add_conv_layer(model, 64)
 add_bn_layer(model)
-add_conv_layer(model, 96)
+add_conv_layer(model, 64)
 add_bn_layer(model)
 add_pooling_layer(model)
 model.add(tf.keras.layers.Dropout(.3))
-add_conv_layer(model, 192)
+add_conv_layer(model, 128)
 add_bn_layer(model)
-add_conv_layer(model, 192)
+add_conv_layer(model, 128)
 add_bn_layer(model)
 add_pooling_layer(model)
 model.add(tf.keras.layers.Dropout(.4))
