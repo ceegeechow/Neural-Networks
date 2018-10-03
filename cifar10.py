@@ -53,8 +53,6 @@ def add_bn_layer(model):
 	model.add(tf.keras.layers.BatchNormalization(momentum=0.99, epsilon=0.001))
 
 #build cnn
-#see: https://appliedmachinelearning.blog/2018/03/24/achieving-
-#90-accuracy-in-object-recognition-task-on-cifar-10-dataset-with-keras-convolutional-neural-networks/
 model = tf.keras.Sequential()
 model.add(tf.keras.layers.Conv2D(32, kernel_size=3, 
 		strides=(1, 1), activation='elu', padding='same', input_shape=(image_h, image_w, channels)))
