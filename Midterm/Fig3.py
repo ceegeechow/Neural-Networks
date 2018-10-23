@@ -1,7 +1,12 @@
+#CGML Midterm - "Understanding intermediate layers using linear classifier probes"
+#https://arxiv.org/pdf/1610.01644.pdf
+#Camille Chow and Jacob Maarek
+#Fall 2018
+#Figure 3
+
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 
 NUM_SAMP = 1000
 training_size = 900
@@ -30,7 +35,7 @@ class Data():
     choices2 = np.random.choice(index, size=test_size)
     return self.data[choices1], self.labels[choices1], self.data[choices2], self.labels[choices2]
 
-    num_layers = 33
+num_layers = 33
 layers = []
 probes = []
 losses = []
@@ -48,6 +53,7 @@ choice = tf.placeholder(tf.float32, [None, 1])
 def my_leaky_relu(x):
   return tf.nn.leaky_relu(x, alpha=.5)
 
+#model: 32 dense layers w/ 128 hidden units, probes at every layer
 for i in range (num_layers):
   if i == 0:
     layers.append(tf.layers.dense(points, 128, activation=my_leaky_relu, kernel_initializer = tf.glorot_normal_initializer(seed = None, dtype=tf.float32), trainable=False))
@@ -68,6 +74,7 @@ probe_error_experiment = []
 
 experiment_number = 0
 
+#perform 100 experiments
 while experiment_number < 100:
   sess = tf.Session()
   sess.run(init)
@@ -81,11 +88,8 @@ while experiment_number < 100:
   while layers_number < num_layers-1:
     
     for _  in range(0, 100):
-#       x_train, y_train = data.get_batch('train')
       loss_np, _ = sess.run([losses[layers_number], optims[layers_number]], feed_dict={points: x_train, choice: y_train})
-
-#     x_test, y_test = data.get_batch('test')
-    
+    #if probe doesn't train sufficiently, start over with new data
     if layers_number == 0 and loss_np > threshold:
       fail_count += 1
       if fail_count >= max_fails:
@@ -106,14 +110,12 @@ while experiment_number < 100:
   print(probe_error)
   probe_error_experiment.append(probe_error) 
   sess.close()
-    
+
+#take average of experiments
 probe_error_experiment = np.asarray(probe_error_experiment)
 average_layer = np.mean(probe_error_experiment, axis=0)
-
-print(average_layer)
-
+#plot
 x = np.arange(1,num_layers)
 plt.bar(x, average_layer, tick_label=x)
 plt.xlabel("linear probe at layer k")
 plt.ylabel("optimal prediction error")
-plt.show()
