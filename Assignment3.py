@@ -55,8 +55,7 @@ model.add(tf.keras.layers.Dense(num_classes, activation='softmax'))
 
 #train model
 model.compile(loss=tf.keras.losses.categorical_crossentropy, optimizer=tf.keras.optimizers.Adam(), metrics=['accuracy'])
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
-#model.fit(x_val, y_val, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
+model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_val, y_val))
 
 #test model
 score = model.evaluate(x_test, y_test, verbose=0)

@@ -5,7 +5,6 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from datetime import datetime
 
 M = 6
 BATCH_SIZE = 40

@@ -70,8 +70,6 @@ fc1_biases = tf.Variable(tf.constant(0.1, shape=[512], dtype=data_type()))
 fc2_weights = tf.Variable(tf.truncated_normal([512, NUM_LABELS], stddev=0.1, seed=SEED, dtype=data_type()))
 fc2_biases = tf.Variable(tf.constant(0.1, shape=[NUM_LABELS], dtype=data_type()))
 
-# We will replicate the model structure for the training subgraph, as well
-# as the evaluation subgraphs, while sharing the trainable parameters.
 def model(data, train=False):
   add_probe(data, 0)
   conv1 = tf.nn.conv2d(data, conv1_weights, strides=[1, 1, 1, 1], padding='SAME', name="conv1")
@@ -128,7 +126,7 @@ learning_rate = tf.train.exponential_decay(
     0.95,                # Decay rate.
     staircase=True)
 # Use simple momentum for the optimization.
-optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9).minimize(loss, global_step=batch) #, var_list=model_varlist???
+optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9).minimize(loss, global_step=batch)
 
 def get_probe_error():
   probe_errors = []

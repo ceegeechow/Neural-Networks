@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 train = pd.read_csv('ag_news_csv/train.csv', names=["labels", "titles", "descriptions"])
 test = pd.read_csv('ag_news_csv/test.csv', names=["labels", "titles", "descriptions"])
 
-
 max_len = 400 #chosen based on max length = 1012, avg length = 237
 num_classes = 4
 
